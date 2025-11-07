@@ -391,24 +391,28 @@ header h1 {
 /* 🏃‍♂️ ランナー紹介の右横に靴のイラストを配置 */
 .runner-shoe {
   position: absolute;
-  top: 68%;              /* ページ内でランナー紹介と縦位置を合わせる */
-  right: 6%;             /* 右端に寄せる（調整OK） */
+  top: 64%;              /* ページ内でランナー紹介と縦位置を合わせる */
+  right: 3%;             /* 右端に寄せる（調整OK） */
   transform: translateY(-50%);
   z-index: 900;
 }
 
 .runner-shoe img {
-  width: 120px;          /* サイズ調整：小さく見せたいときは90px */
-  opacity: 0.9;
-  filter: drop-shadow(0 0 6px rgba(255,140,0,0.5)); /* オレンジの柔らかい影 */
-  animation: shoe-pulse 2.8s ease-in-out infinite;   /* 呼吸のように淡く点滅 */
+  width: 120px;
+  animation: heart-beat 1.2s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(255,140,0,0.7));
 }
 
-/* 靴を淡く点滅させて存在感を出す */
-@keyframes shoe-pulse {
-  0%, 100% { opacity: 0.85; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.04); }
+/* ドクン…ドク…の心臓鼓動アニメーション */
+@keyframes heart-beat {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(1.25); }  /* ドクン（強） */
+  35%  { transform: scale(1); }
+  55%  { transform: scale(1.15); }  /* ドク（弱） */
+  75%  { transform: scale(1); }
+  100% { transform: scale(1); }
 }
+
 </style>
 </head>
 <body>
