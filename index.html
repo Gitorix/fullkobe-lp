@@ -413,6 +413,61 @@ header h1 {
   100% { transform: scale(1); }
 }
 
+/* ===== Finish Hero ===== */
+.hero-finish {
+  margin: 12px 0 18px;
+}
+
+.finish-frame {
+  position: relative;
+  width: 100%;
+  height: 66vh;                 /* 画面の約2/3 */
+  max-height: 720px;            /* タブレットで伸びすぎ防止 */
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.2);  /* 先に薄い下地 */
+  backdrop-filter: blur(2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.finish-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;            /* 余白なしでトリミング */
+  opacity: 1;
+  transition: opacity .6s ease;
+}
+
+#finishImage { opacity: 0; }    /* 最初は写真を隠す */
+.finish-hide { opacity: 0; pointer-events: none; }
+.finish-show { opacity: 1; }
+
+.finish-msg {
+  position: absolute;
+  inset: auto 0 10% 0;          /* 下から10% */
+  text-align: center;
+  font-weight: 800;
+  letter-spacing: .06em;
+  color: #fff;
+  text-shadow: 0 6px 22px rgba(0,0,0,0.5), 0 0 20px rgba(255,170,60,.35);
+  font-size: clamp(22px, 6vw, 40px);
+  opacity: 0;
+  transform: translateY(12px) scale(.98);
+  transition: opacity .7s ease, transform .7s ease;
+}
+
+.finish-msg.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 省エネ設定の人向け：アニメ弱め */
+@media (prefers-reduced-motion: reduce) {
+  .finish-media { transition: opacity .01s linear; }
+  .finish-msg   { transition: opacity .2s linear, transform .2s linear; }
+}
 </style>
 </head>
 <body>
@@ -422,6 +477,26 @@ header h1 {
   <h1>SEVEN 神戸マラソン部</h1>
   <p>2025年11月16日（日）9:00 スタート</p>
 </header>
+<!-- 完走おめでとう：動画→写真 切替ヒーロー -->
+<section class="hero-finish" aria-label="Kobe Marathon Finish">
+  <div class="finish-frame">
+    <video id="finishVideo"
+           class="finish-media"
+           src="assets/finish.mp4"
+           playsinline
+           webkit-playsinline
+           muted
+           autoplay
+           preload="auto"
+           poster="assets/finish.jpg">
+      <!-- fallback -->
+    </video>
+
+    <img id="finishImage" class="finish-media" src="assets/finish.jpg" alt="Kobe Marathon Finish Photo" />
+
+    <div id="finishMsg" class="finish-msg">完走おめでとう</div>
+  </div>
+</section>
 
 
     <!-- カウントダウン -->
@@ -571,5 +646,65 @@ header h1 {
       });
     })();
   </script>
+<script>
+(function(){
+  const vid = document.getElementById('finishVideo');
+  const img = document.getElementById('finishImage');
+  const msg = document.getElementById('finishMsg');
+
+  if (!vid || !img || !msg) return;
+
+  // 初期状態：動画を見せて、写真＆メッセージは非表示
+  img.classList.remove('finish-show');
+  msg.classList.remove('show');
+
+  // 再生開始（モバイル自動再生がブロックされたらフォールバック）
+  const tryPlay = () => {
+    const p = vid.play();
+    if (p && typeof p.then === 'function') {
+      p.catch(() => showImage());
+    }
+  };
+
+  // 動画終了 → 写真＆メッセージへ
+  vid.addEventListener('ended', () => {
+    showImage();
+  });
+
+  // 失敗時・手動フォールバック
+  function showImage() {
+    vid.classList.add('finish-hide');      // フェードアウト
+    img.classList.add('finish-show');      // フェードイン
+    // 少し遅らせてメッセージを浮かび上がらせる
+    setTimeout(() => msg.classList.add('show'), 250);
+  }
+
+  // ページロード or セクションが見えたら再生（見えない位置で再生しない）
+  const startIfVisible = () => {
+    const rect = vid.getBoundingClientRect();
+    const visible = rect.top < window.innerHeight && rect.bottom > 0;
+    if (visible) tryPlay();
+    else {
+      // ビューポートに入ったタイミングで1回だけ再生
+      const io = new IntersectionObserver(entries => {
+        if (entries.some(e => e.isIntersecting)) {
+          tryPlay();
+          io.disconnect();
+        }
+      }, { threshold: 0.2 });
+      io.observe(vid);
+    }
+  };
+
+  // iOSで確実にインライン再生
+  vid.setAttribute('muted', 'muted');
+  vid.setAttribute('playsinline', 'true');
+  vid.setAttribute('webkit-playsinline', 'true');
+
+  // 実行
+  if (document.readyState === 'complete') startIfVisible();
+  else window.addEventListener('load', startIfVisible);
+})();
+</script>
 </body>
 </html>
