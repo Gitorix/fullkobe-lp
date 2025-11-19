@@ -172,9 +172,9 @@
 
     .finish-msg {
   position: absolute;
-  top: 30%;           /* ← ここで場所を決める（上30%） */
+  top: 35%;              /* ← 文字の縦位置（赤枠あたり。高ければ数値を下げる/上げる） */
   left: 50%;
-  transform: translateX(-50%);  /* ← 横だけ中央揃え */
+  transform: translate(-50%, -50%);  /* ← 完全に中央基準にする */
 
   width: 100%;
   text-align: center;
@@ -196,7 +196,6 @@
 .finish-msg.show {
   opacity: 1;
 }
-
 
 
     /* ランナー紹介 */
