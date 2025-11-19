@@ -6,71 +6,65 @@
   <title>セブダオ神戸マラソン部｜ランナー紹介</title>
 
   <style>
-    /* ============================
-       ここから CSS
-       ============================ */
-
+    /* ===== ベース ===== */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
-
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "ヒラギノ角ゴ ProN",
-                   "Hiragino Kaku Gothic ProN", "メイリオ", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", "メイリオ",
+        sans-serif;
       min-height: 100vh;
-      background: #f5f4f2 url("bg-kobe.png") center bottom / cover no-repeat fixed;
+      background: #f5f4f2 url("bg-kobe.png") center bottom / cover
+        no-repeat fixed;
       color: #003a5a;
     }
 
-    /* 白い透明膜 */
+    /* ===== オーバーレイ & カード ===== */
     .overlay {
       background: rgba(0, 63, 97, 0.45);
       min-height: 100vh;
       padding: 16px 14px 60px;
     }
+    @media (min-width: 600px) {
+      .overlay {
+        width: min(560px, 100%);
+        margin: 0 auto;
+      }
+    }
 
-    /* カード */
     .card {
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255,255,255,0.12);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 16px;
       padding: 14px;
       margin-bottom: 16px;
       backdrop-filter: blur(3px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
       color: #fff;
     }
-
     .card h2,
     .card p {
       color: #fff;
     }
 
-    /* ヘッダー */
+    /* ===== ヘッダー ===== */
     header {
       position: relative;
       text-align: center;
       padding-top: 40px;
+      margin-bottom: 8px;
+      color: #fff;
     }
-
     header h1 {
       position: relative;
-      color: #ffffff;
+      color: #fff;
       text-align: center;
       overflow: hidden;
-      font-size: 1.55rem;
-      letter-spacing: .05em;
     }
-
-    header p {
-      color: rgba(255,255,255,0.8);
-      margin-top: 6px;
-      font-size: .85rem;
-    }
-
-    /* 電流エフェクト */
+    /* オレンジの電流エフェクト */
     header h1::after {
       content: "";
       position: absolute;
@@ -78,7 +72,9 @@
       top: 0;
       width: 150%;
       height: 100%;
-      background: linear-gradient(120deg,
+      pointer-events: none;
+      background: linear-gradient(
+        120deg,
         rgba(255, 165, 0, 0) 0%,
         rgba(255, 140, 0, 0.8) 40%,
         rgba(255, 255, 200, 0.9) 50%,
@@ -87,62 +83,27 @@
       );
       mix-blend-mode: screen;
       animation: electric-flow 3s linear infinite;
-      filter: drop-shadow(0 0 6px rgba(255,140,0,0.8));
+      filter: drop-shadow(0 0 6px rgba(255, 140, 0, 0.8));
     }
-
     @keyframes electric-flow {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(150%); }
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(150%);
+      }
     }
 
-    /* 流れ星ロゴ（靴は非表示で尾だけ） */
-    .logo {
-      position: absolute;
-      top: -35px;
-      left: 0;
-      width: 105px;
-      opacity: 0; /* 靴は非表示 */
-      pointer-events: none;
-      animation: logo-ride 1.14s linear infinite;
-      z-index: 9999;
+    header p {
+      font-size: 0.78rem;
+      margin-top: 4px;
+      color: rgba(255, 255, 255, 0.86);
     }
 
-    /* 尾 */
-    .logo::after {
-      content: "";
-      position: absolute;
-      top: 35%;
-      left: 0;
-      width: 160px;
-      height: 20px;
-      background: linear-gradient(
-        to right,
-        rgba(255, 200, 80, 1),
-        rgba(255, 150, 0, 0.7),
-        rgba(255, 150, 0, 0)
-      );
-      filter: blur(4px);
-      opacity: 0;
-      animation: tail-flow 1.14s linear infinite;
-    }
-
-    @keyframes logo-ride {
-      0%   { left: 0; }
-      100% { left: calc(100% - 105px); }
-    }
-
-    @keyframes tail-flow {
-      0%   { opacity: 0; }
-      10%  { opacity: 1; }
-      80%  { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
-    /* finish ヒーロー */
+    /* ===== 完走おめでとう：動画 → 写真ヒーロー ===== */
     .hero-finish {
       margin: 12px 0 18px;
     }
-
     .finish-frame {
       position: relative;
       width: 100%;
@@ -150,318 +111,471 @@
       max-height: 720px;
       border-radius: 18px;
       overflow: hidden;
-      background: rgba(0,0,0,0.2);
+      background: rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     }
-
     .finish-media {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;
-      object-position: top center; /* ← ここを追加（上を優先して表示） */
-　　　 background: #000;  /* 余白が出るので黒背景 */
-      transition: opacity .6s ease;
+      object-fit: contain;        /* ← 全体が映る */
+      object-position: top center;/* ← 上側を優先的に見せる */
+      background: #000;
+      transition: opacity 0.6s ease;
     }
-
     #finishImage {
-      opacity: 0;
+      opacity: 0; /* 最初は非表示 */
     }
 
     .finish-msg {
-  position: absolute;
-  top: 35%;              /* ← 文字の縦位置（赤枠あたり。高ければ数値を下げる/上げる） */
-  left: 50%;
-  transform: translate(-50%, -50%);  /* ← 完全に中央基準にする */
+      position: absolute;
+      top: 35%;              /* ← 縦位置（写真上1/3くらい） */
+      left: 50%;
+      transform: translate(-50%, -50%); /* 中央基準 */
 
-  width: 100%;
-  text-align: center;
+      width: 100%;
+      text-align: center;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      font-size: clamp(22px, 6vw, 40px);
+      color: #fff;
 
-  font-weight: 800;
-  letter-spacing: .06em;
-  font-size: clamp(22px, 6vw, 40px);
-  color: #fff;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6),
+        0 0 22px rgba(255, 170, 60, 0.6),
+        0 0 40px rgba(255, 220, 170, 0.35);
+      opacity: 0;
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .finish-msg.show {
+      opacity: 1;
+    }
 
-  text-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.5),
-    0 0 22px rgba(255,170,60,.45),
-    0 0 38px rgba(255,200,150,.25);
+    @media (prefers-reduced-motion: reduce) {
+      .finish-media {
+        transition: opacity 0.01s linear;
+      }
+      .finish-msg {
+        transition: opacity 0.2s linear, transform 0.2s linear;
+      }
+    }
 
-  opacity: 0;
-  transition: opacity .7s ease, transform .7s ease;
-}
+    /* ===== カウントダウンボックス ===== */
+    .countdown {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+    .cd-item {
+      flex: 1;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 8px 4px;
+    }
+    .cd-num {
+      font-size: 1.3rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .cd-label {
+      font-size: 0.6rem;
+      opacity: 0.85;
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+    }
 
-.finish-msg.show {
-  opacity: 1;
-}
+    /* ===== リンクボタン ===== */
+    .link-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .link-btn {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      background: linear-gradient(120deg, #0090d0, #4ad4ff);
+      color: #fff;
+      padding: 11px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      border: none;
+      box-shadow: 0 0 14px rgba(0, 144, 208, 0.35);
+      animation: btn-pulse 2.4s ease-in-out infinite;
+    }
+    .link-btn.sub {
+      background: rgba(0, 144, 208, 0.25);
+      color: #ffffff;
+      border: 1px solid rgba(151, 230, 255, 0.3);
+      animation: none;
+    }
+    @keyframes btn-pulse {
+      0%,
+      100% {
+        opacity: 1;
+        box-shadow: 0 0 14px rgba(0, 144, 208, 0.35);
+      }
+      50% {
+        opacity: 0.8;
+        box-shadow: 0 0 20px rgba(0, 144, 208, 0.6);
+      }
+    }
 
-
-    /* ランナー紹介 */
+    /* ===== ランナー紹介 ===== */
     .runner-list {
       display: flex;
       gap: 8px;
     }
-
     .runner-card {
       flex: 1;
-      background: rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.04);
       border-radius: 10px;
       padding: 8px 6px;
       text-align: center;
       cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.15);
+      transition: 0.2s;
     }
-
     .runner-card.active {
-      background: rgba(151,230,255,0.12);
-      border-color: rgba(151,230,255,.6);
-      box-shadow: 0 0 8px rgba(151,230,255,0.35);
+      background: rgba(151, 230, 255, 0.12);
+      border-color: rgba(151, 230, 255, 0.6);
+      box-shadow: 0 0 8px rgba(151, 230, 255, 0.35);
     }
-
     .runner-name {
-      font-size: .7rem;
+      font-size: 0.7rem;
       font-weight: 600;
       margin-bottom: 2px;
     }
-
     .runner-meta {
-      font-size: .55rem;
+      font-size: 0.55rem;
+      opacity: 0.85;
     }
 
-    /* プレビュー */
     .preview {
       margin-top: 12px;
-      background: rgba(0,0,0,0.22);
+      background: rgba(0, 0, 0, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.03);
       border-radius: 12px;
       min-height: 140px;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 6px;
     }
-
     .preview img {
       max-width: 100%;
       border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .preview-placeholder {
+      font-size: 0.65rem;
+      opacity: 0.7;
+      text-align: center;
+      line-height: 1.4;
     }
 
-  /* =============================
-   完走おめでとう きらきら強化
-   ============================= */
+    /* ===== ランナー横の靴アイコン ===== */
+    .runner-shoe {
+      position: absolute;
+      top: 64%;
+      right: 3%;
+      transform: translateY(-50%);
+      z-index: 900;
+    }
+    .runner-shoe img {
+      width: 120px;
+      animation: heart-beat 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.7));
+    }
+    @keyframes heart-beat {
+      0% {
+        transform: scale(1);
+      }
+      20% {
+        transform: scale(1.25);
+      }
+      35% {
+        transform: scale(1);
+      }
+      55% {
+        transform: scale(1.15);
+      }
+      75% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
 
-/* 外側の光るグロー */
-.finish-msg {
-  position: absolute;
-  bottom: 10%;
-  width: 100%;
-  text-align: center;
-  font-weight: 800;
-  letter-spacing: .06em;
-
-  color: #fff;
-  font-size: clamp(24px, 7vw, 42px);
-
-  opacity: 0;
-  transform: translateY(12px) scale(.98);
-  transition: opacity .9s ease, transform .9s ease;
-
-  /* ✨キラグロー強化 */
-  text-shadow:
-    0 0 10px rgba(255,170,60,.8),
-    0 0 20px rgba(255,190,90,.8),
-    0 0 35px rgba(255,170,60,.6),
-    0 0 60px rgba(255,150,40,.45);
-}
-
-/* 出現アニメ */
-.finish-msg.show {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  animation: sparkle 2.6s ease-out forwards;
-}
-
-/* ✨キラキラ粒子が左→右に流れる */
-@keyframes sparkle {
-  0%   { filter: brightness(1) drop-shadow(0 0 0px rgba(255,200,80,0)); }
-  20%  { filter: brightness(1.3) drop-shadow(0 0 12px rgba(255,200,80,0.7)); }
-  50%  { filter: brightness(1.4) drop-shadow(0 0 18px rgba(255,200,80,0.9)); }
-  80%  { filter: brightness(1.2) drop-shadow(0 0 10px rgba(255,200,80,0.7)); }
-  100% { filter: brightness(1.0) drop-shadow(0 0 6px rgba(255,200,80,0.5)); }
-}
-
-/* ✨光の帯が横切る（強め） */
-.finish-msg::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 120%;
-  height: 100%;
-  pointer-events: none;
-
-  background: linear-gradient(120deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,240,180,0.9) 50%,
-    rgba(255,255,255,0) 100%
-  );
-
-  opacity: 0.0;
-  transform: skewX(-20deg);
-  animation: shine 2.4s ease-out 0.4s forwards;
-}
-
-@keyframes shine {
-  0%   { left: -120%; opacity: 0; }
-  25%  { opacity: 0.9; }
-  50%  { left: 30%; opacity: 1; }
-  100% { left: 120%; opacity: 0; }
-}
-</style>
+    footer {
+      text-align: center;
+      font-size: 0.55rem;
+      opacity: 0.35;
+      margin-top: 16px;
+      color: #fff;
+    }
+  </style>
 </head>
 
-
 <body>
+  <div class="overlay">
+    <!-- ヘッダー -->
+    <header>
+      <h1>SEVEN 神戸マラソン部</h1>
+      <p>2025年11月16日（日）9:00 スタート</p>
+    </header>
 
-<div class="overlay">
+    <!-- 完走おめでとう：動画→写真 -->
+    <section class="hero-finish" aria-label="Kobe Marathon Finish">
+      <div class="finish-frame">
+        <video
+          id="finishVideo"
+          class="finish-media"
+          src="assets/finish.mp4"
+          playsinline
+          webkit-playsinline
+          muted
+          autoplay
+          preload="auto"
+          poster="assets/finish.jpg"
+        ></video>
 
-  <!-- ヘッダー -->
-  <header>
-    <img src="assets/runninguclub.png" class="logo" alt="">
-    <h1>SEVEN 神戸マラソン部</h1>
-    <p>2025年11月16日（日）9:00 スタート</p>
-  </header>
+        <img
+          id="finishImage"
+          class="finish-media"
+          src="assets/finish.jpg"
+          alt="Kobe Marathon Finish Photo"
+        />
 
-  <!-- 動画 → 写真 → 完走おめでとう -->
-  <section class="hero-finish">
-    <div class="finish-frame">
+        <div id="finishMsg" class="finish-msg">完走おめでとう</div>
+      </div>
+    </section>
 
-      <video id="finishVideo"
-             class="finish-media"
-             src="assets/finish.mp4"
-             playsinline
-             webkit-playsinline
-             muted
-             autoplay
-             preload="auto"
-             poster="assets/finish.jpg">
-      </video>
+    <!-- カウントダウン（数字だけ残す） -->
+    <section class="card">
+      <div class="countdown" id="countdown">
+        <div class="cd-item">
+          <div class="cd-num" id="days">--</div>
+          <div class="cd-label">日</div>
+        </div>
+        <div class="cd-item">
+          <div class="cd-num" id="hours">--</div>
+          <div class="cd-label">時間</div>
+        </div>
+        <div class="cd-item">
+          <div class="cd-num" id="minutes">--</div>
+          <div class="cd-label">分</div>
+        </div>
+        <div class="cd-item">
+          <div class="cd-num" id="seconds">--</div>
+          <div class="cd-label">秒</div>
+        </div>
+      </div>
+    </section>
 
-      <img id="finishImage"
-           class="finish-media"
-           src="assets/finish.jpg" />
+    <!-- リンク -->
+    <section class="card">
+      <div class="link-buttons">
+        <a
+          class="link-btn"
+          href="https://kobe-marathon.net/2025/"
+          target="_blank"
+          rel="noopener"
+          >神戸マラソン公式サイトを見る</a
+        >
+        <a
+          class="link-btn sub"
+          href="https://discord.com/channels/823445725476159488/1168154165478969384"
+          target="_blank"
+          rel="noopener"
+          >応援チャットに参加する</a
+        >
+      </div>
+    </section>
 
-      <div id="finishMsg" class="finish-msg">完走おめでとう</div>
-    </div>
-  </section>
+    <!-- 出場ランナー紹介 -->
+    <section class="card" style="position: relative;">
+      <h2 style="font-size:0.9rem; margin-bottom:10px;">出場ランナー紹介</h2>
+      <p
+        style="font-size:0.62rem; opacity:0.8; margin-bottom:10px;"
+      >
+        タップするとハーフマラソンの記録画像が表示されます。
+      </p>
 
-  <!-- リンク -->
-  <section class="card">
-    <div class="link-buttons">
-      <a class="link-btn"
-         href="https://kobe-marathon.net/2025/" target="_blank">
-        神戸マラソン公式サイトを見る
-      </a>
-      <a class="link-btn sub"
-         href="https://discord.com/channels/823445725476159488/1168154165478969384"
-         target="_blank">
-        応援チャットに参加する
-      </a>
-    </div>
-  </section>
+      <div class="runner-list" id="runnerList">
+        <div
+          class="runner-card active"
+          data-img="assets/IMG_0948.jpg"
+          data-name="yonechan"
+        >
+          <div class="runner-name">yonechan</div>
+          <div class="runner-meta">2時間 5分</div>
+        </div>
 
+        <div
+          class="runner-card"
+          data-img="assets/record_banbi.jpg"
+          data-name="ばんび"
+        >
+          <div class="runner-name">ばんび</div>
+          <div class="runner-meta">2時間 35分</div>
+        </div>
 
-  <!-- ランナー紹介 -->
-  <section class="card">
-
-    <h2 style="font-size:.9rem; margin-bottom:10px;">出場ランナー紹介</h2>
-
-    <div class="runner-list" id="runnerList">
-
-      <div class="runner-card active" data-img="assets/IMG_0948.jpg">
-        <div class="runner-name">yonechan</div>
-        <div class="runner-meta">2時間 5分</div>
+        <div
+          class="runner-card"
+          data-img="assets/record_moai.jpg"
+          data-name="モアイ"
+        >
+          <div class="runner-name">モアイ</div>
+          <div class="runner-meta">1時間 33分</div>
+        </div>
       </div>
 
-      <div class="runner-card" data-img="assets/record_banbi.jpg">
-        <div class="runner-name">ばんび</div>
-        <div class="runner-meta">2時間 35分</div>
+      <!-- 靴アイコン -->
+      <div class="runner-shoe">
+        <img src="assets/runninguclub.png" alt="Running Shoe" />
       </div>
 
-      <div class="runner-card" data-img="assets/record_moai.jpg">
-        <div class="runner-name">モアイ</div>
-        <div class="runner-meta">1時間 33分</div>
+      <div class="preview" id="preview">
+        <div class="preview-placeholder">
+          ランナーをタップすると<br />ここにハーフのタイム画像が出ます。
+        </div>
       </div>
+    </section>
 
-    </div>
+    <footer>&copy; 2025 セブダオ神戸マラソン部</footer>
+  </div>
 
-    <div class="preview" id="preview">
-      <div class="preview-placeholder">
-        ランナーをタップすると<br>画像が表示されます
-      </div>
-    </div>
+  <!-- ===== JS：カウントダウン ===== -->
+  <script>
+    (function () {
+      const target = new Date("2025-11-16T09:00:00+09:00").getTime();
 
-  </section>
+      function updateCountdown() {
+        const now = Date.now();
+        const diff = target - now;
 
-  <footer style="text-align:center; font-size:.55rem; opacity:.35;">
-    &copy; 2025 セブダオ神戸マラソン部
-  </footer>
+        if (diff <= 0) {
+          ["days", "hours", "minutes", "seconds"].forEach((id) => {
+            document.getElementById(id).textContent = "0";
+          });
+          return;
+        }
 
-</div>
+        const day = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hour = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const min = Math.floor(
+          (diff % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const sec = Math.floor((diff % (1000 * 60)) / 1000);
 
-<!-- ============================
-     JS 動画→画像切り替え
-     ============================ -->
-<script>
-(function(){
+        document.getElementById("days").textContent = day;
+        document.getElementById("hours").textContent =
+          hour.toString().padStart(2, "0");
+        document.getElementById("minutes").textContent =
+          min.toString().padStart(2, "0");
+        document.getElementById("seconds").textContent =
+          sec.toString().padStart(2, "0");
+      }
 
-  const vid = document.getElementById("finishVideo");
-  const img = document.getElementById("finishImage");
-  const msg = document.getElementById("finishMsg");
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+  </script>
 
-  img.style.opacity = 0;
-  msg.classList.remove("show");
+  <!-- ===== JS：ランナー画像切替 ===== -->
+  <script>
+    (function () {
+      const list = document.getElementById("runnerList");
+      const preview = document.getElementById("preview");
 
-  vid.addEventListener("ended", () => {
+      list.addEventListener("click", function (e) {
+        const card = e.target.closest(".runner-card");
+        if (!card) return;
 
-    vid.style.opacity = 0;
-    img.style.opacity = 1;
+        document
+          .querySelectorAll(".runner-card")
+          .forEach((c) => c.classList.remove("active"));
+        card.classList.add("active");
 
-    setTimeout(() => {
-      msg.classList.add("show");
-    }, 300);
-  });
+        const imgSrc = card.getAttribute("data-img");
+        const name = card.getAttribute("data-name") || "";
 
-})();
-</script>
+        preview.innerHTML = "";
+        if (imgSrc) {
+          const img = document.createElement("img");
+          img.src = imgSrc;
+          img.alt = name + "のハーフマラソンタイム";
+          preview.appendChild(img);
+        } else {
+          const p = document.createElement("div");
+          p.className = "preview-placeholder";
+          p.textContent = "画像が未設定です";
+          preview.appendChild(p);
+        }
+      });
+    })();
+  </script>
 
-<!-- ============================
-     JS ランナー切り替え
-     ============================ -->
-<script>
-(function(){
+  <!-- ===== JS：動画→写真→完走おめでとう ===== -->
+  <script>
+    (function () {
+      const vid = document.getElementById("finishVideo");
+      const img = document.getElementById("finishImage");
+      const msg = document.getElementById("finishMsg");
 
-  const list = document.getElementById("runnerList");
-  const preview = document.getElementById("preview");
+      if (!vid || !img || !msg) return;
 
-  list.addEventListener("click", e => {
-    const card = e.target.closest(".runner-card");
-    if (!card) return;
+      img.style.opacity = 0;
+      msg.classList.remove("show");
 
-    document.querySelectorAll(".runner-card").forEach(c => c.classList.remove("active"));
-    card.classList.add("active");
+      const tryPlay = () => {
+        const p = vid.play();
+        if (p && typeof p.then === "function") {
+          p.catch(() => showImage());
+        }
+      };
 
-    const imgSrc = card.getAttribute("data-img");
+      function showImage() {
+        vid.style.opacity = 0;
+        img.style.opacity = 1;
+        setTimeout(() => msg.classList.add("show"), 300);
+      }
 
-    preview.innerHTML = "";
-    const img = document.createElement("img");
-    img.src = imgSrc;
+      vid.addEventListener("ended", showImage);
 
-    preview.appendChild(img);
-  });
+      const startIfVisible = () => {
+        const rect = vid.getBoundingClientRect();
+        const visible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (visible) {
+          tryPlay();
+        } else {
+          const io = new IntersectionObserver(
+            (entries) => {
+              if (entries.some((e) => e.isIntersecting)) {
+                tryPlay();
+                io.disconnect();
+              }
+            },
+            { threshold: 0.2 }
+          );
+          io.observe(vid);
+        }
+      };
 
-})();
-</script>
+      vid.setAttribute("muted", "muted");
+      vid.setAttribute("playsinline", "true");
+      vid.setAttribute("webkit-playsinline", "true");
 
+      if (document.readyState === "complete") startIfVisible();
+      else window.addEventListener("load", startIfVisible);
+    })();
+  </script>
 </body>
 </html>
