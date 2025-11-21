@@ -145,70 +145,17 @@
       }
     }
 
-    /* NEXT RACE IN KYOTO（左右・縦書き） */
+        /* NEXT RACE IN KYOTO（左右・縦書き） */
     /* 左側の縦書き NEXT RACE IN KYOTO */
 .finish-frame::before {
-  content: "NEXT  RACE  IN  KYOTO";   /* 単語ごとにスペース */
-  position: absolute;
-  left: 14%;                          /* ← ここを変えると横位置が変わる（中央寄せ調整） */
-  top: 50%;                           /* セクション中央を基準 */
-  transform: translateY(-50%);        /* 垂直中央揃え */
-
-  writing-mode: vertical-rl;          /* 縦書き */
-  text-orientation: upright;
-  font-size: 13px;
-  letter-spacing: .28em;
-  color: rgba(255,0,0,0.7);
-  font-weight: 700;
-  opacity: 0;                         /* 最初は非表示 */
-  transition: opacity .7s ease;
-  z-index: 15;
+  ...
 }
-
-/* 右側の縦書き NEXT RACE IN KYOTO */
-.finish-frame::before {
-  content: "NEXT RACE IN KYOTO"; /* ← 1行！改行なし！ */
-
-  position: absolute;
-  left: 15%;               /* ← 右へ寄せる */
-  top: 50%;
-  transform: translateY(-50%);
-
-  writing-mode: vertical-rl; 
-  text-orientation: upright;
-  font-size: 13px;
-  letter-spacing: 0.25em;
-  color: rgba(255,0,0,0.65);
-  font-weight: 700;
-  opacity: 0;
-  transition: opacity .6s ease;
-  z-index: 15;
-}
-
-.finish-frame::after {
-  content: "NEXT RACE IN KYOTO"; /* ← こちらも同じ！ */
-
-  position: absolute;
-  right: 15%;             /* ← 左へ寄せる */
-  top: 50%;
-  transform: translateY(-50%);
-
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  font-size: 13px;
-  letter-spacing: 0.25em;
-  color: rgba(255,0,0,0.65);
-  font-weight: 700;
-  opacity: 0;
-  transition: opacity .6s ease;
-  z-index: 15;
-}
-
-/* 完走メッセージと一緒にフェードインさせる */
-.finish-frame.ready::before,
-.finish-frame.ready::after {
+...
+.finish-frame.show-sides::before,
+.finish-frame.show-sides::after {
   opacity: 1;
 }
+
 
     /* 左右を少し内側に寄せる（ここ触れば位置微調整できる） */
     .finish-frame::before { left: 10%; }   /* 左の文字を右側へ寄せる */
