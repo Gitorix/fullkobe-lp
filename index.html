@@ -145,26 +145,58 @@
       }
     }
 
-        /* NEXT RACE IN KYOTO（左右・縦書き） */
-    /* 左側の縦書き NEXT RACE IN KYOTO */
+        /* NEXT RACE IN KYOTO（縦書き１行・左右に配置） */
+
+/* 左側 */
 .finish-frame::before {
-  ...
+  content: "NEXT  RACE  IN  KYOTO"; /* ← 1行、スペースで区切る */
+  position: absolute;
+  left: 10%;                /* ← 左右位置（調整OK） */
+  top: 50%;
+  transform: translateY(-50%);
+
+  writing-mode: vertical-rl;  /* ← これで縦書き  */
+  white-space: nowrap;        /* ← 改行禁止（めちゃ重要） */
+  text-orientation: upright;
+
+  font-size: 13px;
+  letter-spacing: 0.18em;     /* ← 文字の間隔（調整OK） */
+  color: rgba(255,0,0,0.65);
+  font-weight: 700;
+
+  opacity: 0;
+  transition: opacity .7s ease;
+  z-index: 20;
 }
-...
+
+/* 右側 */
+.finish-frame::after {
+  content: "NEXT  RACE  IN  KYOTO";
+  position: absolute;
+  right: 10%;               /* ← 右側に寄せる */
+  top: 50%;
+  transform: translateY(-50%);
+
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+  text-orientation: upright;
+
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: rgba(255,0,0,0.65);
+  font-weight: 700;
+
+  opacity: 0;
+  transition: opacity .7s ease;
+  z-index: 20;
+}
+
+/* 完走メッセージと同時にフェードイン */
 .finish-frame.show-sides::before,
 .finish-frame.show-sides::after {
   opacity: 1;
 }
 
-
-    /* 左右を少し内側に寄せる（ここ触れば位置微調整できる） */
-    .finish-frame::before { left: 10%; }   /* 左の文字を右側へ寄せる */
-    .finish-frame::after  { right: 10%; }  /* 右の文字を左側へ寄せる */
-
-    .finish-frame.show-sides::before,
-    .finish-frame.show-sides::after {
-      opacity: 1;
-    }
 
     /* 音 ON/OFF ボタン & リプレイボタン */
     .finish-controls {
