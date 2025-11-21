@@ -55,16 +55,7 @@
       padding-top: 40px;
       margin-bottom: 8px;
     }
-    .logo {
-      position: absolute;
-      top: -22px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 64px;
-      border-radius: 12px;
-      padding: 6px;
-      background: rgba(255,255,255,0.12);
-    }
+    
     header h1 {
       font-size: 1.4rem;
       font-weight: 800;
@@ -107,31 +98,38 @@
 
     /* 完走メッセージ（文字だけ光る） */
     .finish-msg {
-      position: absolute;
-      top: 42%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: auto;
-      padding: 8px 18px;
-      border-radius: 999px;
-      text-align: center;
-      font-weight: 800;
-      letter-spacing: .18em;
-      font-size: clamp(20px, 5vw, 32px);
-      color: #fff;
-      text-shadow:
-        0 0 8px rgba(255, 255, 255, 0.9),
-        0 0 22px rgba(255, 180, 80, 0.9),
-        0 0 36px rgba(255, 140, 0, 0.9);
-      opacity: 0;
-      transform-origin: center;
-      transition: opacity .7s ease, transform .7s ease;
-    }
-    .finish-msg.show {
-      opacity: 1;
-      animation: finish-glow 2.6s ease-in-out infinite alternate;
-      transform: translate(-50%, -50%) scale(1.02);
-    }
+  position: absolute;
+  top: 38%;                 /* 文字の縦位置（お好みで微調整可） */
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;              /* 幅は文字サイズに任せる */
+  text-align: center;
+
+  white-space: nowrap;      /* ★ 改行させない（横1行固定） */
+
+  font-weight: 800;
+  letter-spacing: .12em;
+  font-size: clamp(26px, 4vw, 40px);
+  color: #fff;
+
+  /* 文字だけが光っているようなエフェクト */
+  text-shadow:
+    0 0 10px rgba(255,255,255,0.9),
+    0 0 25px rgba(255,200,120,0.9),
+    0 0 40px rgba(255,120,40,0.85),
+    0 0 60px rgba(255,90,0,0.8);
+
+  opacity: 0;
+  transform-origin: center;
+  transition: opacity .7s ease, transform .7s ease;
+}
+
+.finish-msg.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.03); /* ほんの少し大きく */
+}
+
+
     @keyframes finish-glow {
       0% {
         text-shadow:
@@ -148,22 +146,50 @@
     }
 
     /* NEXT RACE IN KYOTO（左右・縦書き） */
-    .finish-frame::before,
-    .finish-frame::after {
-      content: "NEXTRACEINKYOTO";
-      position: absolute;
-      top: 48%;                      /* 高さ基準（少し上にしたければ 46 など） */
-      transform: translateY(-58%);   /* 上向きに少し寄せる */
-      writing-mode: vertical-rl;
-      text-orientation: upright;
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      color: rgba(255, 80, 80, 0.75);
-      font-weight: 700;
-      opacity: 0;
-      transition: opacity .7s ease .15s;
-      z-index: 15;
-    }
+    /* 左側の縦書き NEXT RACE IN KYOTO */
+.finish-frame::before {
+  content: "NEXT  RACE  IN  KYOTO";   /* 単語ごとにスペース */
+  position: absolute;
+  left: 14%;                          /* ← ここを変えると横位置が変わる（中央寄せ調整） */
+  top: 50%;                           /* セクション中央を基準 */
+  transform: translateY(-50%);        /* 垂直中央揃え */
+
+  writing-mode: vertical-rl;          /* 縦書き */
+  text-orientation: upright;
+  font-size: 13px;
+  letter-spacing: .28em;
+  color: rgba(255,0,0,0.7);
+  font-weight: 700;
+  opacity: 0;                         /* 最初は非表示 */
+  transition: opacity .7s ease;
+  z-index: 15;
+}
+
+/* 右側の縦書き NEXT RACE IN KYOTO */
+.finish-frame::after {
+  content: "NEXT  RACE  IN  KYOTO";
+  position: absolute;
+  right: 14%;                         /* ← ここを変えると横位置が変わる（中央寄せ調整） */
+  top: 50%;
+  transform: translateY(-50%);
+
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: 13px;
+  letter-spacing: .28em;
+  color: rgba(255,0,0,0.7);
+  font-weight: 700;
+  opacity: 0;                         /* 最初は非表示 */
+  transition: opacity .7s ease;
+  z-index: 15;
+}
+
+/* 完走メッセージと一緒にフェードインさせる */
+.finish-frame.ready::before,
+.finish-frame.ready::after {
+  opacity: 1;
+}
+
     /* 左右を少し内側に寄せる（ここ触れば位置微調整できる） */
     .finish-frame::before { left: 10%; }   /* 左の文字を右側へ寄せる */
     .finish-frame::after  { right: 10%; }  /* 右の文字を左側へ寄せる */
@@ -336,7 +362,6 @@
 <body>
   <div class="overlay">
     <header>
-      <img src="assets/runninguclub.png" alt="セブダオランニングクラブロゴ" class="logo">
       <h1>SEVEN 神戸マラソン部</h1>
       <p>2025年11月16日（日）9:00 スタート</p>
     </header>
