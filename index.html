@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>セブダオ神戸マラソン部｜ランナー紹介</title>
+
   <style>
-    /* ===== ベース ===== */
+    /* ========== 共通リセット ========== */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -19,6 +20,7 @@
       color: #003a5a;
     }
 
+    /* ========== メインの白い（青い）パネル ========== */
     .overlay {
       background: rgba(0, 63, 97, 0.45);
       min-height: 100vh;
@@ -38,7 +40,7 @@
       padding: 14px;
       margin-bottom: 16px;
       backdrop-filter: blur(3px);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
       color: #fff;
     }
     .card h2,
@@ -46,49 +48,49 @@
       color: #fff;
     }
 
-    /* ===== ヘッダー ===== */
+    /* ========== ヘッダー・タイトル ========== */
     header {
       position: relative;
       text-align: center;
       padding-top: 40px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     .logo {
       position: absolute;
-      top: 6px;
+      top: -22px;
       left: 50%;
       transform: translateX(-50%);
-      width: 70px;
-      border-radius: 14px;
-      padding: 4px;
-      background: rgba(255, 255, 255, 0.12);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      width: 64px;
+      border-radius: 12px;
+      padding: 6px;
+      background: rgba(255,255,255,0.12);
     }
     header h1 {
-      color: #fff;
       font-size: 1.4rem;
-      letter-spacing: 0.12em;
-      margin-bottom: 4px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: .12em;
     }
     header p {
-      font-size: 0.8rem;
-      color: rgba(255, 255, 255, 0.9);
+      margin-top: 6px;
+      font-size: .8rem;
+      color: rgba(255,255,255,0.85);
     }
 
-    /* ===== 完走ヒーロー（動画 → 写真 → メッセージ） ===== */
+    /* ========== 完走動画 & 写真セクション ========== */
     .hero-finish {
-      margin: 12px 0 20px;
+      margin: 12px 0 18px;
     }
+
     .finish-frame {
       position: relative;
-      margin: 0 auto;
       width: 100%;
-      max-width: 720px;
-      height: min(68vh, 520px);
-      border-radius: 24px;
+      height: 66vh;
+      max-height: 720px;
+      border-radius: 18px;
       overflow: hidden;
       background: #000;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     }
 
     .finish-media {
@@ -96,143 +98,118 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: contain;       /* 全体が切れずに見える */
-      object-position: top center;
+      object-fit: contain;
       background: #000;
-      opacity: 1;
-      transition: opacity 0.7s ease;
+      transition: opacity .6s ease;
     }
-    #finishVideo {
-      z-index: 1;
-    }
-    #finishImage {
-      z-index: 0;
-      opacity: 0;               /* 最初は非表示 */
-    }
+    #finishVideo { opacity: 1; }
+    #finishImage { opacity: 0; }
 
-    /* 完走メッセージ（中央の長方形＋キラキラ） */
+    /* 完走メッセージ（文字だけ光る） */
     .finish-msg {
       position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      top: 42%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: auto;
+      padding: 8px 18px;
+      border-radius: 999px;
+      text-align: center;
+      font-weight: 800;
+      letter-spacing: .18em;
+      font-size: clamp(20px, 5vw, 32px);
+      color: #fff;
+      text-shadow:
+        0 0 8px rgba(255, 255, 255, 0.9),
+        0 0 22px rgba(255, 180, 80, 0.9),
+        0 0 36px rgba(255, 140, 0, 0.9);
       opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-      pointer-events: none;
+      transform-origin: center;
+      transition: opacity .7s ease, transform .7s ease;
     }
     .finish-msg.show {
       opacity: 1;
-      transform: translateY(0);
+      animation: finish-glow 2.6s ease-in-out infinite alternate;
+      transform: translate(-50%, -50%) scale(1.02);
+    }
+    @keyframes finish-glow {
+      0% {
+        text-shadow:
+          0 0 4px rgba(255,255,255,0.7),
+          0 0 14px rgba(255,170,80,0.7),
+          0 0 26px rgba(255,140,0,0.6);
+      }
+      100% {
+        text-shadow:
+          0 0 12px rgba(255,255,255,1),
+          0 0 32px rgba(255,210,120,1),
+          0 0 56px rgba(255,120,0,0.95);
+      }
     }
 
-    .finish-text {
-      position: relative;
-      display: inline-block;
-      padding: 0.6em 1.7em;     /* ← ここで長方形の大きさ調整 */
-      border-radius: 16px;
-      background: rgba(30, 30, 30, 0.92);
-      color: #fff;
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      font-size: clamp(20px, 4.5vw, 34px);
-      text-shadow:
-        0 0 6px rgba(255, 255, 255, 0.8),
-        0 0 14px rgba(255, 225, 150, 0.9);
-      overflow: hidden;
-    }
-
-    /* 光の塊（長方形全体のグロー） */
-    .finish-text::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background: radial-gradient(
-        circle at center,
-        rgba(255, 220, 150, 0.95),
-        rgba(255, 190, 80, 0.45),
-        transparent 70%
-      );
-      filter: blur(8px);
-      opacity: 0.9;
-      z-index: -1;
-    }
-
-    /* キラッと横切るハイライト */
-    .finish-text::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -120%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(255, 255, 255, 0.95),
-        transparent
-      );
-      mix-blend-mode: screen;
-      animation: shine 2.4s ease-in-out infinite;
-    }
-
-    @keyframes shine {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(260%); }
-    }
-
-    /* NEXT RACE IN KYOTO（左右縦書き） */
+    /* NEXT RACE IN KYOTO（左右・縦書き） */
     .finish-frame::before,
     .finish-frame::after {
-      content: "NEXT RACE IN KYOTO";
+      content: "NEXTRACEINKYOTO";
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      writing-mode: vertical-rl;     /* 縦書き */
+      top: 48%;                      /* 高さ基準（少し上にしたければ 46 など） */
+      transform: translateY(-58%);   /* 上向きに少し寄せる */
+      writing-mode: vertical-rl;
       text-orientation: upright;
-      white-space: nowrap;           /* 改行させない */
       font-size: 12px;
-      letter-spacing: 0.22em;
-      color: rgba(255, 90, 70, 0.85);
-      text-shadow: 0 0 12px rgba(255, 140, 120, 0.9);
+      letter-spacing: 0.18em;
+      color: rgba(255, 80, 80, 0.75);
+      font-weight: 700;
       opacity: 0;
-      transition: opacity 0.7s ease;
-      z-index: 4;
+      transition: opacity .7s ease .15s;
+      z-index: 15;
     }
-    .finish-frame::before {
-      left: 4%;
-    }
-    .finish-frame::after {
-      right: 4%;
-    }
-    /* メッセージ表示と同時に縦書きも出す */
-    .finish-frame.finish-decor-on::before,
-    .finish-frame.finish-decor-on::after {
+    /* 左右を少し内側に寄せる（ここ触れば位置微調整できる） */
+    .finish-frame::before { left: 10%; }   /* 左の文字を右側へ寄せる */
+    .finish-frame::after  { right: 10%; }  /* 右の文字を左側へ寄せる */
+
+    .finish-frame.show-sides::before,
+    .finish-frame.show-sides::after {
       opacity: 1;
     }
 
-    /* サウンドトグルボタン */
-    .sound-toggle {
+    /* 音 ON/OFF ボタン & リプレイボタン */
+    .finish-controls {
       position: absolute;
       right: 12px;
       bottom: 12px;
-      padding: 6px 12px;
-      font-size: 0.7rem;
-      border-radius: 999px;
-      border: none;
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
       display: flex;
+      gap: 8px;
+      z-index: 30;
+    }
+    .finish-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 11px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      backdrop-filter: blur(4px);
+      display: inline-flex;
       align-items: center;
       gap: 4px;
-      cursor: pointer;
-      backdrop-filter: blur(3px);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-      z-index: 5;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .finish-btn span.icon {
+      font-size: 13px;
+    }
+    #replayBtn {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+    }
+    #replayBtn.show {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    /* ===== カウントダウン ===== */
+    /* ========== カウントダウン ========== */
     .countdown {
       display: flex;
       gap: 10px;
@@ -241,7 +218,7 @@
     .cd-item {
       flex: 1;
       text-align: center;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255,255,255,0.08);
       border-radius: 12px;
       padding: 8px 4px;
     }
@@ -251,13 +228,13 @@
       line-height: 1.1;
     }
     .cd-label {
-      font-size: 0.6rem;
-      opacity: 0.85;
+      font-size: .6rem;
+      opacity: .85;
       margin-top: 4px;
-      letter-spacing: 0.05em;
+      letter-spacing: .05em;
     }
 
-    /* ===== ボタンリンク ===== */
+    /* ========== ボタンリンク ========== */
     .link-buttons {
       display: flex;
       flex-direction: column;
@@ -272,63 +249,56 @@
       padding: 11px 10px;
       border-radius: 999px;
       font-weight: 600;
-      font-size: 0.82rem;
+      font-size: .82rem;
       border: none;
-      box-shadow: 0 0 14px rgba(0, 144, 208, 0.35);
+      box-shadow: 0 0 14px rgba(0,144,208,0.35);
       animation: btn-pulse 2.4s ease-in-out infinite;
     }
     .link-btn.sub {
-      background: rgba(0, 144, 208, 0.25);
+      background: rgba(0,144,208,0.25);
+      border: 1px solid rgba(151,230,255,0.3);
       color: #ffffff;
-      border: 1px solid rgba(151, 230, 255, 0.3);
       animation: none;
     }
     @keyframes btn-pulse {
-      0%, 100% {
-        opacity: 1;
-        box-shadow: 0 0 14px rgba(0, 144, 208, 0.35);
-      }
-      50% {
-        opacity: 0.8;
-        box-shadow: 0 0 20px rgba(0, 144, 208, 0.6);
-      }
+      0%, 100% { opacity: 1; box-shadow: 0 0 14px rgba(0,144,208,0.35); }
+      50%      { opacity: .8; box-shadow: 0 0 20px rgba(0,144,208,0.6); }
     }
 
-    /* ===== ランナー紹介 ===== */
+    /* ========== ランナー紹介 ========== */
     .runner-list {
       display: flex;
       gap: 8px;
-      margin-bottom: 10px;
     }
     .runner-card {
       flex: 1;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.04);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.04);
       border-radius: 10px;
       padding: 8px 6px;
       text-align: center;
       cursor: pointer;
-      transition: 0.2s;
+      transition: .2s;
     }
     .runner-card.active {
-      background: rgba(151, 230, 255, 0.12);
-      border-color: rgba(151, 230, 255, 0.6);
-      box-shadow: 0 0 8px rgba(151, 230, 255, 0.35);
+      background: rgba(151,230,255,0.12);
+      border-color: rgba(151,230,255,.6);
+      box-shadow: 0 0 8px rgba(151,230,255,0.35);
     }
     .runner-name {
-      font-size: 0.7rem;
+      font-size: .7rem;
       font-weight: 600;
       margin-bottom: 2px;
     }
     .runner-meta {
-      font-size: 0.55rem;
-      opacity: 0.85;
+      font-size: .55rem;
+      opacity: .85;
     }
 
     .preview {
-      margin-top: 4px;
-      background: rgba(0, 0, 0, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.03);
+      margin-top: 12px;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.03);
       border-radius: 12px;
       min-height: 140px;
       display: flex;
@@ -339,25 +309,30 @@
     .preview img {
       max-width: 100%;
       border-radius: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.05);
     }
     .preview-placeholder {
-      font-size: 0.65rem;
-      opacity: 0.7;
+      font-size: .65rem;
+      opacity: .7;
       text-align: center;
       line-height: 1.4;
     }
 
-    /* フッター */
     footer {
-      text-align: center;
-      font-size: 0.55rem;
-      opacity: 0.35;
-      margin-top: 16px;
+      text-align:center;
+      font-size:.55rem;
+      opacity:.35;
+      margin-top:16px;
       color: #fff;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .finish-media { transition: opacity .1s linear; }
+      .finish-msg   { transition: opacity .2s linear, transform .2s linear; }
     }
   </style>
 </head>
+
 <body>
   <div class="overlay">
     <header>
@@ -366,31 +341,35 @@
       <p>2025年11月16日（日）9:00 スタート</p>
     </header>
 
-    <!-- 完走おめでとう：動画 → 写真 → メッセージ -->
+    <!-- 完走おめでとう：動画→写真 -->
     <section class="hero-finish" aria-label="Kobe Marathon Finish">
-      <div id="finishFrame" class="finish-frame">
-        <video
-          id="finishVideo"
-          class="finish-media"
-          src="assets/finish.mp4"
-          playsinline
-          webkit-playsinline
-          muted
-          preload="auto"
-          poster="assets/finish.jpg">
+      <div class="finish-frame" id="finishFrame">
+
+        <video id="finishVideo"
+               class="finish-media"
+               src="assets/finish.mp4"
+               playsinline
+               webkit-playsinline
+               muted
+               preload="auto"
+               poster="assets/finish.jpg">
         </video>
 
-        <img
-          id="finishImage"
-          class="finish-media"
-          src="assets/finish.jpg"
-          alt="Kobe Marathon Finish Photo" />
+        <img id="finishImage"
+             class="finish-media"
+             src="assets/finish.jpg"
+             alt="Kobe Marathon Finish Photo" />
 
-        <div id="finishMsg" class="finish-msg">
-          <span class="finish-text">完走おめでとう</span>
+        <div id="finishMsg" class="finish-msg">完走おめでとう</div>
+
+        <div class="finish-controls">
+          <button id="replayBtn" class="finish-btn">
+            <span class="icon">▶︎</span> もう一回
+          </button>
+          <button id="soundToggle" class="finish-btn">
+            <span class="icon">🔊</span> 音をOFFにする
+          </button>
         </div>
-
-        <button id="soundToggle" class="sound-toggle">🔈 音をONにする</button>
       </div>
     </section>
 
@@ -460,33 +439,46 @@
     </footer>
   </div>
 
+  <!-- ========== JS：カウントダウン ========== -->
   <script>
-    /* ===== カウントダウン（今は0固定でもOK） ===== */
-    (function () {
+    (function() {
       const target = new Date('2025-11-16T09:00:00+09:00').getTime();
+
       function updateCountdown() {
         const now = new Date().getTime();
         const diff = target - now;
-        const day = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
-        const hour = Math.max(0, Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-        const min = Math.max(0, Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)));
-        const sec = Math.max(0, Math.floor((diff % (1000 * 60)) / 1000));
+
+        if (diff <= 0) {
+          document.getElementById('days').textContent = '0';
+          document.getElementById('hours').textContent = '0';
+          document.getElementById('minutes').textContent = '0';
+          document.getElementById('seconds').textContent = '0';
+          return;
+        }
+
+        const day = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hour = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const min = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const sec = Math.floor((diff % (1000 * 60)) / 1000);
 
         document.getElementById('days').textContent = day;
         document.getElementById('hours').textContent = hour.toString().padStart(2, '0');
         document.getElementById('minutes').textContent = min.toString().padStart(2, '0');
         document.getElementById('seconds').textContent = sec.toString().padStart(2, '0');
       }
+
       updateCountdown();
       setInterval(updateCountdown, 1000);
     })();
+  </script>
 
-    /* ===== ランナー画像切り替え ===== */
-    (function () {
+  <!-- ========== JS：ランナー切替 ========== -->
+  <script>
+    (function() {
       const list = document.getElementById('runnerList');
       const preview = document.getElementById('preview');
 
-      list.addEventListener('click', function (e) {
+      list.addEventListener('click', function(e) {
         const card = e.target.closest('.runner-card');
         if (!card) return;
 
@@ -510,44 +502,80 @@
         }
       });
     })();
+  </script>
 
-    /* ===== 完走ヒーロー：動画 → 写真 ＋ メッセージ & 縦書きテキスト ===== */
-    (function () {
-      const frame = document.getElementById('finishFrame');
-      const video = document.getElementById('finishVideo');
-      const img   = document.getElementById('finishImage');
-      const msg   = document.getElementById('finishMsg');
-      const soundBtn = document.getElementById('soundToggle');
+  <!-- ========== JS：完走動画 → 写真 & エフェクト & 音 & リプレイ ========== -->
+  <script>
+    (function(){
+      const frame  = document.getElementById('finishFrame');
+      const vid    = document.getElementById('finishVideo');
+      const img    = document.getElementById('finishImage');
+      const msg    = document.getElementById('finishMsg');
+      const soundT = document.getElementById('soundToggle');
+      const replay = document.getElementById('replayBtn');
 
-      if (!frame || !video || !img || !msg) return;
+      if (!frame || !vid || !img || !msg) return;
 
-      video.muted = true;  // 初期はミュート（自動再生のため）
+      // iOS 自動再生対応
+      vid.setAttribute('muted', 'muted');
+      vid.setAttribute('playsinline', 'true');
+      vid.setAttribute('webkit-playsinline', 'true');
+      vid.muted = true;
 
-      const tryPlay = () => {
-        const p = video.play();
-        if (p && typeof p.then === 'function') {
-          p.catch(() => {
-            // 自動再生ブロックされた場合は何もしない（ユーザー操作待ち）
-          });
-        }
-      };
-
+      // 動画終了 → 写真 & メッセージ & NEXT RACE
       function showImage() {
-        video.style.opacity = 0;
-        img.style.opacity = 1;
+        vid.style.opacity  = 0;
+        img.style.opacity  = 1;
         msg.classList.add('show');
-        frame.classList.add('finish-decor-on');
+        frame.classList.add('show-sides');
+        replay.classList.add('show');
       }
 
-      video.addEventListener('ended', showImage);
+      vid.addEventListener('ended', showImage);
 
-      soundBtn.addEventListener('click', () => {
-        video.muted = !video.muted;
-        soundBtn.textContent = video.muted ? '🔈 音をONにする' : '🔈 音をOFFにする';
-        if (video.paused) tryPlay();
+      // 画面に入ったら再生
+      const startIfVisible = () => {
+        const rect = vid.getBoundingClientRect();
+        const visible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (visible) {
+          vid.play().catch(()=>{ /* ブロックされたら無視 */ });
+        } else {
+          const io = new IntersectionObserver(entries => {
+            if (entries.some(e => e.isIntersecting)) {
+              vid.play().catch(()=>{});
+              io.disconnect();
+            }
+          }, { threshold: 0.2 });
+          io.observe(vid);
+        }
+      };
+      if (document.readyState === 'complete') startIfVisible();
+      else window.addEventListener('load', startIfVisible);
+
+      // 音 ON/OFF
+      let soundOn = false;
+      soundT.addEventListener('click', () => {
+        soundOn = !soundOn;
+        vid.muted = !soundOn;
+        if (soundOn) {
+          soundT.innerHTML = '<span class="icon">🔊</span> 音をONにしました';
+          vid.play().catch(()=>{});
+        } else {
+          soundT.innerHTML = '<span class="icon">🔇</span> 音をOFFにする';
+        }
       });
 
-      window.addEventListener('load', tryPlay);
+      // リプレイ
+      replay.addEventListener('click', () => {
+        // 元の状態に戻す
+        replay.classList.remove('show');
+        msg.classList.remove('show');
+        frame.classList.remove('show-sides');
+        img.style.opacity = 0;
+        vid.style.opacity = 1;
+        vid.currentTime = 0;
+        vid.play().catch(()=>{});
+      });
     })();
   </script>
 </body>
