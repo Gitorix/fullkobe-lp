@@ -130,27 +130,35 @@
       transform: translateX(-50%) scale(1.03);
     }
 
-    /* NEXT RACE IN KYOTO（左右・縦書き） */
+        /* NEXT RACE IN KYOTO（左右・完全に縦一列） */
     .next-race {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      writing-mode: vertical-rl;
-      text-orientation: upright;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
       font-size: 13px;
-      letter-spacing: .28em;
       color: rgba(255,0,0,0.72);
       font-weight: 700;
+
       opacity: 0;
       transition: opacity .7s ease;
       z-index: 15;
     }
-    .next-race-left  { left: 11%; }  /* ← ここを小さくすると中央寄せ */
-    .next-race-right { right: 11%; } /* ← ここも同じ */
+
+    .next-race-left  { left: 11%; }   /* 中央寄せしたいなら数値を同じだけ小さく */
+    .next-race-right { right: 11%; }
+
+    .next-race span + span {
+      margin-top: 0.24em;  /* 文字同士の縦の間隔 */
+    }
 
     .next-race.show {
       opacity: 1;
     }
+
 
     /* 音 ON/OFF ボタン & リプレイボタン */
     .finish-controls {
@@ -341,18 +349,19 @@
 
         <div id="finishMsg" class="finish-msg">完走おめでとう</div>
 
-        <div class="next-race next-race-left">NEXT  RACE  IN  KYOTO</div>
-        <div class="next-race next-race-right">NEXT  RACE  IN  KYOTO</div>
-
-        <div class="finish-controls">
-          <button id="replayBtn" class="finish-btn">
-            <span class="icon">▶</span> もう一回
-          </button>
-          <button id="soundBtn" class="finish-btn">
-            <span class="icon">🔈</span><span id="soundLabel">音をONにする</span>
-          </button>
+       <div class="next-race next-race-left">
+          <span>N</span><span>E</span><span>X</span><span>T</span>
+          <span>R</span><span>A</span><span>C</span><span>E</span>
+          <span>I</span><span>N</span>
+          <span>K</span><span>Y</span><span>O</span><span>T</span><span>O</span>
         </div>
-      </div>
+
+        <div class="next-race next-race-right">
+          <span>N</span><span>E</span><span>X</span><span>T</span>
+          <span>R</span><span>A</span><span>C</span><span>E</span>
+          <span>I</span><span>N</span>
+          <span>K</span><span>Y</span><span>O</span><span>T</span><span>O</span>
+        </div>
     </section>
 
     <!-- カウントダウン（大会当日0になってる想定） -->
