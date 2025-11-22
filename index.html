@@ -6,7 +6,7 @@
   <title>セブダオ神戸マラソン部｜ランナー紹介</title>
 
   <style>
-    /* ========== リセット ========== */
+    /* ========== 共通リセット ========== */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -20,7 +20,7 @@
       color: #003a5a;
     }
 
-    /* ========== メインのパネル ========== */
+    /* ========== メインの青いパネル ========== */
     .overlay {
       background: rgba(0, 63, 97, 0.45);
       min-height: 100vh;
@@ -48,7 +48,7 @@
       color: #fff;
     }
 
-    /* ========== ヘッダー ========== */
+    /* ========== ヘッダー・タイトル ========== */
     header {
       position: relative;
       text-align: center;
@@ -67,7 +67,7 @@
       color: rgba(255,255,255,0.85);
     }
 
-    /* ========== 完走セクション ========== */
+    /* ========== 完走動画 & 写真セクション ========== */
     .hero-finish {
       margin: 12px 0 18px;
     }
@@ -82,7 +82,6 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.35);
     }
 
-    /* 動画 & 写真 */
     .finish-media {
       position: absolute;
       inset: 0;
@@ -92,16 +91,24 @@
       background: #000;
       transition: opacity .6s ease;
     }
-    #finishVideo { opacity: 1; }
-    #finishImage { opacity: 0; }
+    #finishVideo {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #finishImage {
+      opacity: 0;
+      pointer-events: none;
+    }
 
-    /* 完走おめでとう（横1行・文字だけ光る） */
+    /* 完走メッセージ（文字だけ光る） */
     .finish-msg {
       position: absolute;
       top: 38%;
       left: 50%;
       transform: translateX(-50%);
-      white-space: nowrap;
+      width: auto;
+      text-align: center;
+      white-space: nowrap;      /* 横1行固定 */
 
       font-weight: 800;
       letter-spacing: .12em;
@@ -117,63 +124,35 @@
       opacity: 0;
       transform-origin: center;
       transition: opacity .7s ease, transform .7s ease;
-      z-index: 25;
     }
     .finish-msg.show {
       opacity: 1;
       transform: translateX(-50%) scale(1.03);
     }
 
-    /* ============================= */
-/*  NEXT RACE IN KYOTO（左右）   */
-/* ============================= */
+    /* NEXT RACE IN KYOTO（左右・縦書き） */
+    .next-race {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      font-size: 13px;
+      letter-spacing: .28em;
+      color: rgba(255,0,0,0.72);
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity .7s ease;
+      z-index: 15;
+    }
+    .next-race-left  { left: 11%; }  /* ← ここを小さくすると中央寄せ */
+    .next-race-right { right: 11%; } /* ← ここも同じ */
 
-/* 左側 */
-.finish-frame::before {
-  content: "N\nE\nX\nT\n\nR\nA\nC\nE\n\nI\nN\n\nK\nY\nO\nT\nO";
-  position: absolute;
-  left: 6%;                /* ← 内側に寄せたい時は 7〜9% とかに変更 */
-  top: 50%;
-  transform: translateY(-50%);
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.25em;
-  color: rgba(255,0,0,0.70);
-  opacity: 0;
-  transition: opacity .7s ease;
-  z-index: 20;
-  white-space: pre;
-}
+    .next-race.show {
+      opacity: 1;
+    }
 
-/* 右側 */
-.finish-frame::after {
-  content: "N\nE\nX\nT\n\nR\nA\nC\nE\n\nI\nN\n\nK\nY\nO\nT\nO";
-  position: absolute;
-  right: 6%;               /* ← 内側に寄せたい時は 7〜9% とかに変更 */
-  top: 50%;
-  transform: translateY(-50%);
-  writing-mode: vertical-rl;
-  text-orientation: upright;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.25em;
-  color: rgba(255,0,0,0.70);
-  opacity: 0;
-  transition: opacity .7s ease;
-  z-index: 20;
-  white-space: pre;
-}
-
-/* 完走メッセージと一緒にフェードインさせる */
-.finish-frame.sides-show::before,
-.finish-frame.sides-show::after {
-  opacity: 1;
-}
-
-
-    /* 音ON/OFF & リプレイボタン */
+    /* 音 ON/OFF ボタン & リプレイボタン */
     .finish-controls {
       position: absolute;
       right: 12px;
@@ -234,7 +213,7 @@
       letter-spacing: .05em;
     }
 
-    /* ========== ボタンリンク ========== */
+    /* ========== 神戸マラソン公式 / 応援リンク ========== */
     .link-buttons {
       display: flex;
       flex-direction: column;
@@ -332,72 +311,73 @@
     }
   </style>
 </head>
-
 <body>
   <div class="overlay">
 
+    <!-- ヘッダー -->
     <header>
       <h1>SEVEN 神戸マラソン部</h1>
       <p>2025年11月16日（日）9:00 スタート</p>
     </header>
 
-    <!-- 完走：動画 → 写真 → メッセージ + NEXT RACE IN KYOTO -->
+    <!-- 完走おめでとう：動画 → 写真ヒーロー -->
     <section class="hero-finish" aria-label="Kobe Marathon Finish">
-      <div class="finish-frame">
-        <video
-          id="finishVideo"
-          class="finish-media"
-          src="assets/finish.mp4"
-          playsinline
-          webkit-playsinline
-          muted
-          autoplay
-          preload="auto"
-          poster="assets/finish.jpg">
+      <div class="finish-frame" id="finishFrame">
+        <video id="finishVideo"
+               class="finish-media"
+               src="assets/finish.mp4"
+               playsinline
+               webkit-playsinline
+               muted
+               autoplay
+               preload="auto"
+               poster="assets/finish.jpg">
         </video>
 
-        <img
-          id="finishImage"
-          class="finish-media"
-          src="assets/finish.jpg"
-          alt="Kobe Marathon Finish" />
+        <img id="finishImage"
+             class="finish-media"
+             src="assets/finish.jpg"
+             alt="Kobe Marathon finish photo" />
 
         <div id="finishMsg" class="finish-msg">完走おめでとう</div>
 
+        <div class="next-race next-race-left">NEXT  RACE  IN  KYOTO</div>
+        <div class="next-race next-race-right">NEXT  RACE  IN  KYOTO</div>
+
         <div class="finish-controls">
           <button id="replayBtn" class="finish-btn">
-            <span class="icon">⏪</span><span>もう一回</span>
+            <span class="icon">▶</span> もう一回
           </button>
           <button id="soundBtn" class="finish-btn">
-            <span class="icon">🔊</span><span class="label">音をOFFにする</span>
+            <span class="icon">🔈</span><span id="soundLabel">音をONにする</span>
           </button>
         </div>
       </div>
     </section>
 
-    <!-- カウントダウン -->
+    <!-- カウントダウン（大会当日0になってる想定） -->
     <section class="card">
       <div class="countdown" id="countdown">
         <div class="cd-item">
-          <div class="cd-num" id="days">--</div>
+          <div class="cd-num" id="days">0</div>
           <div class="cd-label">日</div>
         </div>
         <div class="cd-item">
-          <div class="cd-num" id="hours">--</div>
+          <div class="cd-num" id="hours">0</div>
           <div class="cd-label">時間</div>
         </div>
         <div class="cd-item">
-          <div class="cd-num" id="minutes">--</div>
+          <div class="cd-num" id="minutes">0</div>
           <div class="cd-label">分</div>
         </div>
         <div class="cd-item">
-          <div class="cd-num" id="seconds">--</div>
+          <div class="cd-num" id="seconds">0</div>
           <div class="cd-label">秒</div>
         </div>
       </div>
     </section>
 
-    <!-- 公式リンク -->
+    <!-- リンク -->
     <section class="card">
       <div class="link-buttons">
         <a class="link-btn" href="https://kobe-marathon.net/2025/" target="_blank" rel="noopener">
@@ -409,10 +389,12 @@
       </div>
     </section>
 
-    <!-- ランナー紹介 -->
+    <!-- 出場ランナー紹介 -->
     <section class="card">
       <h2 style="font-size:.9rem; margin-bottom:10px;">出場ランナー紹介</h2>
-      <p style="font-size:.62rem; opacity:.8; margin-bottom:10px;">タップするとハーフマラソンの記録画像が表示されます。</p>
+      <p style="font-size:.62rem; opacity:.8; margin-bottom:10px;">
+        タップするとハーフマラソンの記録画像が表示されます。
+      </p>
 
       <div class="runner-list" id="runnerList">
         <div class="runner-card active" data-img="assets/IMG_0948.jpg" data-name="yonechan">
@@ -441,36 +423,39 @@
     </footer>
   </div>
 
-  <!-- ==================== JS ==================== -->
   <script>
-    /* カウントダウン */
+    // ===== カウントダウン（秒ごと） =====
     (function() {
       const target = new Date('2025-11-16T09:00:00+09:00').getTime();
+
       function updateCountdown() {
-        const now = Date.now();
+        const now = new Date().getTime();
         const diff = target - now;
+
         if (diff <= 0) {
-          document.getElementById('days').textContent    = '0';
-          document.getElementById('hours').textContent   = '0';
+          document.getElementById('days').textContent = '0';
+          document.getElementById('hours').textContent = '0';
           document.getElementById('minutes').textContent = '0';
           document.getElementById('seconds').textContent = '0';
           return;
         }
+
         const day = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hour = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const min = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const sec = Math.floor((diff % (1000 * 60)) / 1000);
+        const min  = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const sec  = Math.floor((diff % (1000 * 60)) / 1000);
 
         document.getElementById('days').textContent    = day;
-        document.getElementById('hours').textContent   = hour.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = min.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = sec.toString().padStart(2, '0');
+        document.getElementById('hours').textContent   = hour.toString().padStart(2,'0');
+        document.getElementById('minutes').textContent = min.toString().padStart(2,'0');
+        document.getElementById('seconds').textContent = sec.toString().padStart(2,'0');
       }
+
       updateCountdown();
       setInterval(updateCountdown, 1000);
     })();
 
-    /* ランナー画像切り替え */
+    // ===== ランナー画像切り替え =====
     (function() {
       const list = document.getElementById('runnerList');
       const preview = document.getElementById('preview');
@@ -500,44 +485,84 @@
       });
     })();
 
-    /* 完走動画 → 写真 → メッセージ + NEXT RACE IN KYOTO ＋ リプレイ & 音 */
-    (function() {
-      const frame      = document.querySelector('.finish-frame');
-      const video      = document.getElementById('finishVideo');
-      const image      = document.getElementById('finishImage');
-      const msg        = document.getElementById('finishMsg');
-      const replayBtn  = document.getElementById('replayBtn');
-      const soundBtn   = document.getElementById('soundBtn');
-      const soundLabel = soundBtn.querySelector('.label');
+    // ===== 完走ヒーロー：動画 → 写真、メッセージ、NEXT RACE IN KYOTO =====
+    document.addEventListener('DOMContentLoaded', () => {
+      const video     = document.getElementById('finishVideo');
+      const image     = document.getElementById('finishImage');
+      const msg       = document.getElementById('finishMsg');
+      const replayBtn = document.getElementById('replayBtn');
+      const soundBtn  = document.getElementById('soundBtn');
+      const soundLabel= document.getElementById('soundLabel');
+      const nextLeft  = document.querySelector('.next-race-left');
+      const nextRight = document.querySelector('.next-race-right');
 
-      if (!frame || !video || !image || !msg) return;
+      if (!video || !image || !msg) return;
 
-      // 動画終了 → 写真＆テキスト表示
-      vid.addEventListener('ended', () => {
-  showImage();
-  finishFrame.classList.add('sides-show');   // ← 毎回これだけ付ける
-});
+      // iOS対策：確実にミュート & インライン
+      video.muted = true;
+      video.setAttribute('playsinline','true');
+      video.setAttribute('webkit-playsinline','true');
 
+      function showFinishState() {
+        video.style.opacity = 0;
+        video.style.pointerEvents = 'none';
 
-      // もう一回
-      replayBtn.addEventListener('click', () => {
-        replayBtn.classList.remove('show');
-        msg.classList.remove('show');
-        frame.classList.remove('show-sides');
+        image.style.opacity = 1;
+        image.style.pointerEvents = 'auto';
 
+        msg.classList.add('show');
+        nextLeft.classList.add('show');
+        nextRight.classList.add('show');
+
+        replayBtn.classList.add('show');
+      }
+
+      function resetToVideo() {
         image.style.opacity = 0;
-        video.currentTime = 0;
+        image.style.pointerEvents = 'none';
+
+        msg.classList.remove('show');
+        nextLeft.classList.remove('show');
+        nextRight.classList.remove('show');
+
         video.style.opacity = 1;
-        video.play();
+        video.style.pointerEvents = 'auto';
+
+        replayBtn.classList.remove('show');
+      }
+
+      // 動画終了で写真＋メッセージ＋NEXT RACE
+      video.addEventListener('ended', showFinishState);
+
+      // リプレイ
+      replayBtn.addEventListener('click', () => {
+        resetToVideo();
+        video.currentTime = 0;
+        const p = video.play();
+        if (p && typeof p.then === 'function') p.catch(()=>{});
       });
 
-      // 音 ON/OFF
+      // 音 ON / OFF
       soundBtn.addEventListener('click', () => {
         video.muted = !video.muted;
-        soundLabel.textContent = video.muted ? '音をONにする' : '音をOFFにする';
-        soundBtn.querySelector('.icon').textContent = video.muted ? '🔇' : '🔊';
+        if (video.muted) {
+          soundLabel.textContent = '音をONにする';
+        } else {
+          soundLabel.textContent = '音をOFFにする';
+          const p = video.play();
+          if (p && typeof p.then === 'function') p.catch(()=>{});
+        }
       });
-    })();
+
+      // 自動再生トライ（失敗しても無視）
+      const autoPlay = video.play();
+      if (autoPlay && typeof autoPlay.then === 'function') {
+        autoPlay.catch(() => {
+          // ブラウザにブロックされた場合はリプレイボタンだけ出しておく
+          replayBtn.classList.add('show');
+        });
+      }
+    });
   </script>
 </body>
 </html>
