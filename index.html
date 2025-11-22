@@ -130,10 +130,11 @@
       transform: translateX(-50%) scale(1.03);
     }
 
-        .next-race {
+        /* NEXT RACE IN KYOTO（左右・ガチ固定） */
+.next-race {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%);  /* 縦方向ど真ん中 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -142,14 +143,13 @@
   font-weight: 700;
   color: rgba(255,0,0,0.75);
 
-  letter-spacing: 0;       /* ← これ絶対必要（ズレ防止） */
-  line-height: 1;          /* ← スペースゼロ化 */
+  letter-spacing: 0;  /* 文字間のブレ防止 */
+  line-height: 1;
 
-  opacity: 0;
-  transition: opacity .7s ease;
   z-index: 15;
 }
 
+/* 左右の白い帯のほぼ真ん中に固定 */
 .next-race-left  { left: 12%; }
 .next-race-right { right: 12%; }
 
@@ -158,10 +158,9 @@
   margin: 2px 0;
 }
 
+/* show クラスはあっても何もしない（崩れ防止） */
+.next-race.show {}
 
-    .next-race.show {
-      opacity: 1;
-    }
 
 
     /* 音 ON/OFF ボタン & リプレイボタン */
