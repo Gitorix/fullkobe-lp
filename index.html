@@ -124,35 +124,54 @@
       transform: translateX(-50%) scale(1.03);
     }
 
-    /* NEXT RACE IN KYOTO（左右・縦1行） */
-    .finish-frame::before,
-    .finish-frame::after {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      writing-mode: vertical-rl;
-      text-orientation: upright;
+    /* ============================= */
+/*  NEXT RACE IN KYOTO（左右）   */
+/* ============================= */
 
-      content: "NEXT  RACE  IN  KYOTO"; /* 改行なしの1行 */
+/* 左側 */
+.finish-frame::before {
+  content: "N\nE\nX\nT\n\nR\nA\nC\nE\n\nI\nN\n\nK\nY\nO\nT\nO";
+  position: absolute;
+  left: 6%;                /* ← 内側に寄せたい時は 7〜9% とかに変更 */
+  top: 50%;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: rgba(255,0,0,0.70);
+  opacity: 0;
+  transition: opacity .7s ease;
+  z-index: 20;
+  white-space: pre;
+}
 
-      font-size: 14px;
-      font-weight: 700;
-      color: rgba(255,0,0,0.75);
-      letter-spacing: 0.28em;
+/* 右側 */
+.finish-frame::after {
+  content: "N\nE\nX\nT\n\nR\nA\nC\nE\n\nI\nN\n\nK\nY\nO\nT\nO";
+  position: absolute;
+  right: 6%;               /* ← 内側に寄せたい時は 7〜9% とかに変更 */
+  top: 50%;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: rgba(255,0,0,0.70);
+  opacity: 0;
+  transition: opacity .7s ease;
+  z-index: 20;
+  white-space: pre;
+}
 
-      opacity: 0; /* 最初は透明 */
-      transition: opacity .7s ease;
-      z-index: 20;
-    }
-    /* 左右の位置（中央に寄せたいときは 13〜16% あたりを調整） */
-    .finish-frame::before { left: 14%; }
-    .finish-frame::after  { right: 14%; }
+/* 完走メッセージと一緒にフェードインさせる */
+.finish-frame.sides-show::before,
+.finish-frame.sides-show::after {
+  opacity: 1;
+}
 
-    /* 完走メッセージと同時にフェードイン */
-    .finish-frame.show-sides::before,
-    .finish-frame.show-sides::after {
-      opacity: 1;
-    }
 
     /* 音ON/OFF & リプレイボタン */
     .finish-controls {
@@ -494,14 +513,11 @@
       if (!frame || !video || !image || !msg) return;
 
       // 動画終了 → 写真＆テキスト表示
-      video.addEventListener('ended', () => {
-        video.style.opacity = 0;
-        image.style.opacity = 1;
+      vid.addEventListener('ended', () => {
+  showImage();
+  finishFrame.classList.add('sides-show');   // ← 毎回これだけ付ける
+});
 
-        msg.classList.add('show');
-        frame.classList.add('show-sides');
-        replayBtn.classList.add('show');
-      });
 
       // もう一回
       replayBtn.addEventListener('click', () => {
