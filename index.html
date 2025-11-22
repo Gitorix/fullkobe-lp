@@ -130,30 +130,34 @@
       transform: translateX(-50%) scale(1.03);
     }
 
-        /* NEXT RACE IN KYOTO（左右・完全に縦一列） */
-    .next-race {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+        .next-race {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-      font-size: 13px;
-      color: rgba(255,0,0,0.72);
-      font-weight: 700;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,0,0,0.75);
 
-      opacity: 0;
-      transition: opacity .7s ease;
-      z-index: 15;
-    }
+  letter-spacing: 0;       /* ← これ絶対必要（ズレ防止） */
+  line-height: 1;          /* ← スペースゼロ化 */
 
-    .next-race-left  { left: 11%; }   /* 中央寄せしたいなら数値を同じだけ小さく */
-    .next-race-right { right: 11%; }
+  opacity: 0;
+  transition: opacity .7s ease;
+  z-index: 15;
+}
 
-    .next-race span + span {
-      margin-top: 0.24em;  /* 文字同士の縦の間隔 */
-    }
+.next-race-left  { left: 12%; }
+.next-race-right { right: 12%; }
+
+.next-race span {
+  display: block;
+  margin: 2px 0;
+}
+
 
     .next-race.show {
       opacity: 1;
@@ -329,40 +333,52 @@
     </header>
 
     <!-- 完走おめでとう：動画 → 写真ヒーロー -->
-    <section class="hero-finish" aria-label="Kobe Marathon Finish">
-      <div class="finish-frame" id="finishFrame">
-        <video id="finishVideo"
-               class="finish-media"
-               src="assets/finish.mp4"
-               playsinline
-               webkit-playsinline
-               muted
-               autoplay
-               preload="auto"
-               poster="assets/finish.jpg">
-        </video>
+<section class="hero-finish" aria-label="Kobe Marathon Finish">
+  <div class="finish-frame" id="finishFrame">
+    <video id="finishVideo"
+           class="finish-media"
+           src="assets/finish.mp4"
+           playsinline
+           webkit-playsinline
+           muted
+           autoplay
+           preload="auto"
+           poster="assets/finish.jpg">
+    </video>
 
-        <img id="finishImage"
-             class="finish-media"
-             src="assets/finish.jpg"
-             alt="Kobe Marathon finish photo" />
+    <img id="finishImage"
+         class="finish-media"
+         src="assets/finish.jpg"
+         alt="Kobe Marathon finish photo" />
 
-        <div id="finishMsg" class="finish-msg">完走おめでとう</div>
+    <div id="finishMsg" class="finish-msg">完走おめでとう</div>
 
-       <div class="next-race next-race-left">
-          <span>N</span><span>E</span><span>X</span><span>T</span>
-          <span>R</span><span>A</span><span>C</span><span>E</span>
-          <span>I</span><span>N</span>
-          <span>K</span><span>Y</span><span>O</span><span>T</span><span>O</span>
-        </div>
+    <div class="next-race next-race-left">
+      <span>N</span><span>E</span><span>X</span><span>T</span>
+      <span>R</span><span>A</span><span>C</span><span>E</span>
+      <span>I</span><span>N</span>
+      <span>K</span><span>Y</span><span>O</span><span>T</span><span>O</span>
+    </div>
 
-        <div class="next-race next-race-right">
-          <span>N</span><span>E</span><span>X</span><span>T</span>
-          <span>R</span><span>A</span><span>C</span><span>E</span>
-          <span>I</span><span>N</span>
-          <span>K</span><span>Y</span><span>O</span><span>T</span><span>O</span>
-        </div>
-    </section>
+    <div class="next-race next-race-right">
+      <span>N</span><span>E</span><span>X</span><span>T</span>
+      <span>R</span><span>A</span><span>C</span><span>E</span>
+      <span>I</span><span>N</span>
+      <span>K</span><span>Y</span><span>O</span><span>T</span><span>O</span>
+    </div>
+
+    <div class="finish-controls">
+      <button id="replayBtn" class="finish-btn">
+        <span class="icon">▶</span> もう一回
+      </button>
+      <button id="soundBtn" class="finish-btn">
+        <span class="icon">🔈</span><span id="soundLabel">音をONにする</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+
 
     <!-- カウントダウン（大会当日0になってる想定） -->
     <section class="card">
